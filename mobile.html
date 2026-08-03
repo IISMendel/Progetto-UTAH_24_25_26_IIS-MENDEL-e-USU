@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Progetto Internazionalizzazione UTAH — versione mobile</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap');
+
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{
+    margin:0; padding:0;
+    font-family:sans-serif;
+    background-color:#f4efe2;
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(0,0,0,.025) 0, transparent 40%),
+      radial-gradient(circle at 80% 60%, rgba(0,0,0,.025) 0, transparent 45%);
+  }
+
+  /* niente colonne laterali di foto, niente nomi volanti:
+     su mobile poco spazio e connessione piu' lenta, meglio
+     tenere leggera la pagina e concentrarsi su video + testo */
+
+  .intro{ text-align:center; padding:26px 16px 10px; }
+  .intro-logo{ width:56px; height:56px; margin:0 auto 8px; display:block; filter:drop-shadow(0 4px 10px rgba(0,0,0,.2)); }
+  .intro h1{
+    font-family:'Playfair Display', serif; font-weight:900; font-style:italic;
+    font-size:32px; line-height:1.15; color:#1e3a24; margin:0;
+  }
+  .intro h1::after{ content:""; display:block; width:80px; height:3px; margin:10px auto 0; background:linear-gradient(90deg, transparent, #a6431f, transparent); }
+  .intro p{ color:#6b6153; font-size:12px; margin:10px 0 0; letter-spacing:.02em; padding:0 10px; }
+
+  /* ---------------- video ---------------- */
+  .video-wrap{
+    max-width:480px; margin:16px auto 0; padding:0 14px;
+  }
+  .video-card{
+    position:relative;
+    border-radius:10px; overflow:hidden;
+    box-shadow:0 14px 30px rgba(60,45,25,.3);
+  }
+  .video-card video{ display:block; width:100%; height:auto; }
+  .tap-hint{
+    position:absolute; bottom:8px; right:10px;
+    background:rgba(0,0,0,.5); color:#fff; font-size:10px;
+    padding:4px 8px; border-radius:20px; pointer-events:none;
+  }
+
+  /* ---------------- music ---------------- */
+  .music-bar{
+    max-width:480px; margin:16px auto 0; padding:0 14px;
+  }
+  .music-card{
+    display:flex; align-items:center; gap:10px;
+    background:rgba(255,255,255,.9);
+    border-radius:16px; padding:10px 14px;
+    box-shadow:0 6px 16px rgba(0,0,0,.12);
+  }
+  .music-btn{
+    width:38px; height:38px; border-radius:50%; border:none; cursor:pointer; font-size:15px;
+    display:flex; align-items:center; justify-content:center; background:#3a5a3a; color:#fff;
+    flex-shrink:0;
+  }
+  .music-btn.muted{ background:#a8977c; }
+  .song-title{ font-family:sans-serif; font-size:12px; color:#4a4438; font-weight:700; flex:1; }
+
+  /* ---------------- lettera ---------------- */
+  .letter-page{
+    max-width:480px; margin:20px auto 0; padding:24px 16px 34px;
+    background-color:#faf6ea;
+    box-shadow:0 14px 30px rgba(60,45,25,.25);
+    border:1px solid rgba(120,100,70,.15);
+    border-radius:10px;
+  }
+  .letter-logos{ display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+  .logo-slot{
+    width:52px; height:52px; border-radius:50%; background:#fff;
+    border:1.5px solid rgba(120,100,70,.25);
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,.12);
+  }
+  .logo-slot img{ width:100%; height:100%; object-fit:contain; padding:5px; }
+
+  .letter-title{
+    text-align:center; font-family:'Playfair Display', serif; font-weight:900; font-style:italic;
+    font-size:26px; color:#1e3a24; margin:4px 0 2px;
+  }
+  .letter-title-en{
+    text-align:center; font-family:'Playfair Display', serif; font-weight:700; font-style:italic;
+    font-size:14px; color:#6b8a6d; margin:0 0 16px;
+  }
+
+  .lang-tabs{ display:flex; gap:8px; margin-bottom:14px; }
+  .lang-tab{
+    flex:1; text-align:center; padding:8px 0; border-radius:20px;
+    font-family:sans-serif; font-size:12px; font-weight:700; letter-spacing:.04em;
+    text-transform:uppercase; cursor:pointer;
+    background:rgba(120,100,70,.08); color:#8a7f6d;
+  }
+  .lang-tab.active{ background:#2f6b4f; color:#fff; }
+
+  .letter-body{
+    font-family:'Caveat',cursive; font-size:21px; line-height:1.45; color:#2b2b26;
+    white-space:pre-wrap; display:none;
+  }
+  .letter-body.active{ display:block; }
+
+  .hl{ color:#2b2b26; }
+  .hl.lit{ color:#a6431f; }
+
+  footer{
+    text-align:center; font-family:sans-serif; color:#8a7f6d; font-size:11px;
+    padding:18px 16px 40px; line-height:1.6;
+  }
+  footer strong{ color:#4a4438; }
+
+  .desktop-link{
+    text-align:center; padding:0 16px 10px;
+  }
+  .desktop-link a{
+    font-family:sans-serif; font-size:11px; color:#2f6b4f; text-decoration:underline;
+  }
+</style>
+</head>
+<body>
+
+<div class="intro">
+  <img class="intro-logo" src="logo-mendel.png" alt="Logo IIS Gregorio Mendel">
+  <h1>Progetto Internazionalizzazione UTAH</h1>
+  <p>IIS GREGORIO MENDEL · VILLA CORTESE (MI) × UTAH STATE UNIVERSITY</p>
+</div>
+
+<div class="desktop-link">
+  <a href="index.html">Versione completa da computer →</a>
+</div>
+
+<div class="video-wrap">
+  <div class="video-card" id="videoCard">
+    <video id="posterVideo" src="poster-pagina1-video.mp4" poster="poster-pagina1-v2.png"
+           muted loop playsinline></video>
+    <span class="tap-hint" id="tapHint">▶ tocca per avviare</span>
+  </div>
+</div>
+
+<div class="music-bar">
+  <div class="music-card">
+    <button class="music-btn" id="prevBtn" title="Precedente">⏮</button>
+    <button class="music-btn" id="playBtn" title="Play/Pausa">▶</button>
+    <button class="music-btn" id="nextBtn" title="Successiva">⏭</button>
+    <span class="song-title" id="songTitle">Dawn</span>
+    <button class="music-btn" id="muteBtn" title="Muto">🔊</button>
+  </div>
+</div>
+
+<div class="letter-page" id="letterPage">
+  <div class="letter-logos">
+    <div class="logo-slot"><img src="logo-mendel.png" alt="Logo IIS Mendel"></div>
+    <div class="logo-slot"><img src="logo-usu.png" alt="Logo Utah State University"></div>
+  </div>
+  <div class="letter-title">Tre anni di scambio culturale</div>
+  <div class="letter-title-en">Three Years of Cultural Exchange</div>
+
+  <div class="lang-tabs">
+    <div class="lang-tab active" data-lang="it">Italiano</div>
+    <div class="lang-tab" data-lang="en">English</div>
+  </div>
+
+  <div class="letter-body active" id="letterBodyIT"></div>
+  <div class="letter-body" id="letterBodyEN"></div>
+</div>
+
+<footer>
+  <strong>IIS Gregorio Mendel</strong> · Villa Cortese (MI)<br>
+  Pagina creata dal prof. Massimiliano Crespi per l'IIS Gregorio Mendel di Villa Cortese (MI)<br>
+  <span style="font-size:10px; opacity:.85;">Page created by prof. Massimiliano Crespi for IIS Gregorio Mendel, Villa Cortese (MI), Italy</span>
+</footer>
+
+<script>
+  /* =========================================================
+     VIDEO: parte muto in autoplay (compatibile iOS/Android);
+     un tocco sul video attiva/disattiva il suono.
+  ========================================================= */
+  const video = document.getElementById('posterVideo');
+  const tapHint = document.getElementById('tapHint');
+  const videoCard = document.getElementById('videoCard');
+  video.play().catch(()=>{ /* alcuni browser bloccano anche il muted autoplay: ok, restera' in pausa finche' l'utente non tocca */ });
+
+  videoCard.addEventListener('click', ()=>{
+    if (video.paused){ video.play(); }
+    video.muted = !video.muted;
+    tapHint.textContent = video.muted ? '🔇 tocca per il sonoro' : '🔊 audio attivo';
+  });
+
+  /* =========================================================
+     MUSICA DI SOTTOFONDO
+  ========================================================= */
+  const songs = [
+    { name:"Dawn",                     src:"song1-dawn.mp3" },
+    { name:"Distant Peaks",            src:"song2-distant-peaks.mp3" },
+    { name:"Dust on the Ridge",        src:"song3-dust-on-the-ridge.mp3" },
+    { name:"Morning Light on the Lake",src:"song4-morning-light.mp3" },
+  ];
+  let songIndex = 0;
+  const player = new Audio();
+  player.volume = 0.5;
+  let isMuted = false;
+
+  const playBtn = document.getElementById('playBtn');
+  const muteBtn = document.getElementById('muteBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const songTitle = document.getElementById('songTitle');
+
+  function loadSong(index, autoplay){
+    songIndex = (index + songs.length) % songs.length;
+    player.src = songs[songIndex].src;
+    songTitle.textContent = songs[songIndex].name;
+    if (autoplay){ player.play(); playBtn.textContent = '⏸'; }
+  }
+  player.addEventListener('ended', ()=> loadSong(songIndex + 1, true));
+  loadSong(0, false);
+
+  playBtn.addEventListener('click', ()=>{
+    if (player.paused){ player.play(); playBtn.textContent = '⏸'; }
+    else { player.pause(); playBtn.textContent = '▶'; }
+  });
+  prevBtn.addEventListener('click', ()=> loadSong(songIndex - 1, true));
+  nextBtn.addEventListener('click', ()=> loadSong(songIndex + 1, true));
+  muteBtn.addEventListener('click', ()=>{
+    isMuted = !isMuted;
+    player.muted = isMuted;
+    muteBtn.textContent = isMuted ? '🔇' : '🔊';
+    muteBtn.classList.toggle('muted', isMuted);
+  });
+
+  /* =========================================================
+     LETTERA — su mobile niente digitazione lettera per lettera
+     (pesa poco senso su schermo piccolo): testo gia' pronto,
+     con le frasi piu' belle evidenziate in modo permanente.
+     Due tab IT/EN al posto delle colonne affiancate.
+  ========================================================= */
+  const contentIT = [
+    { text: "Con il mese di maggio si è ufficialmente concluso il terzo anno di ", highlight:false },
+    { text: "un straordinario progetto di scambio internazionale", highlight:true },
+    { text: " che ha visto la nostra scuola protagonista. Nel corso del 2026 abbiamo avuto il piacere di ospitare la student-teacher di quest'anno, Allison Hampton.\n\n", highlight:false },
+    { text: "L'iniziativa si è inserita all'interno di un importante accordo tripartito tra l'Università degli Studi di Bergamo, una rete di scuole lombarde (delle province di Milano e Bergamo) e la Facoltà di Scienze Applicate della Utah State University (Logan, USA). Questo accordo ha permesso a giovani docenti statunitensi specializzati nelle discipline STEM di svolgere un tirocinio pratico nei nostri istituti, un'esperienza fondamentale per il conseguimento della loro abilitazione all'insegnamento.\n\n", highlight:false },
+    { text: "Per la parte italiana, le attività sono state coordinate dai professori Massimiliano Crespi e Anna Lisa Musazzi. Desideriamo esprimere un sentito ringraziamento a tutte le colleghe che nel corso di questo triennio hanno accolto le studentesse americane ", highlight:false },
+    { text: "con enorme disponibilità e spirito di condivisione:", highlight:true },
+    { text: "\n\n• Nel 2024, la prof.ssa Cordò, che ha ospitato con grande generosità Chloë;\n• Nel 2025, la prof.ssa Gianna L'Episcopo, che ha accolto Rachel con immenso calore e dedizione;\n• Nel 2026, le prof.sse Antonella Colombo e Annalisa Colombo, che hanno guidato e supportato Allison durante il suo tirocinio.\n\n", highlight:false },
+    { text: "Un sentito ringraziamento va alla nostra Dirigente Scolastica, prof.ssa Cristina Gualtieri, che ha creduto in questo progetto fin dall'inizio", highlight:true },
+    { text: ", a Tyson Sorensen (Associate Professor & Program Lead presso la Utah State University) e a tutti i docenti, le famiglie e gli studenti che hanno preso parte all'iniziativa.\n\n", highlight:false },
+    { text: "Questa pagina raccoglie soltanto una piccola selezione dei momenti più belli e significativi vissuti insieme in questi tre anni. Un'esperienza così ricca e intensa meriterebbe ovviamente un intero sito web dedicato per poter essere raccontata come merita, ma speriamo che queste immagini e testimonianze riescano a trasmettere ", highlight:false },
+    { text: "la magia di questo viaggio e della nostra crescita condivisa.", highlight:true },
+  ];
+
+  const contentEN = [
+    { text: "This past May officially marked the conclusion of the third year of ", highlight:false },
+    { text: "an extraordinary international exchange project", highlight:true },
+    { text: " that involved our school. During 2026, we had the pleasure of hosting this year's student-teacher, Allison Hampton.\n\n", highlight:false },
+    { text: "The initiative was part of a major tripartite agreement between the University of Bergamo, a network of schools in Lombardy (Milan and Bergamo provinces), and the College of Agriculture and Applied Sciences at Utah State University (Logan, USA). This agreement allowed young STEM educators from the US to complete a practical teaching internship in our classrooms, an essential step toward obtaining their teaching credential.\n\n", highlight:false },
+    { text: "On the Italian side, activities were coordinated by professors Massimiliano Crespi and Anna Lisa Musazzi. We would like to express our heartfelt gratitude to all the colleagues who welcomed the American student-teachers over these three years ", highlight:false },
+    { text: "with remarkable generosity and dedication:", highlight:true },
+    { text: "\n\n• In 2024, Prof.ssa Cordò, who generously hosted Chloë;\n• In 2025, Prof.ssa Gianna L'Episcopo, who welcomed Rachel with incredible warmth and care;\n• In 2026, Prof.ssa Antonella Colombo and Prof.ssa Annalisa Colombo, who guided and supported Allison throughout her internship.\n\n", highlight:false },
+    { text: "Our sincere thanks go to our Principal, Prof.ssa Cristina Gualtieri, who believed in this project from the very beginning", highlight:true },
+    { text: ", to Tyson Sorensen (Associate Professor & Program Lead at Utah State University), and to all the teachers, host families, and students who participated.\n\n", highlight:false },
+    { text: "This page gathers just a small selection of the highlights and memorable moments shared over the past three years. An experience so rich and meaningful would obviously deserve an entire website to be fully captured, but we hope these photos and stories offer a glimpse into ", highlight:false },
+    { text: "this wonderful journey of shared learning and cultural growth.", highlight:true },
+  ];
+
+  function renderLetter(content, containerId){
+    const body = document.getElementById(containerId);
+    body.innerHTML = '';
+    content.forEach(part=>{
+      if (part.highlight){
+        const span = document.createElement('span');
+        span.className = 'hl lit';
+        span.textContent = part.text;
+        body.appendChild(span);
+      } else {
+        body.appendChild(document.createTextNode(part.text));
+      }
+    });
+  }
+  renderLetter(contentIT, 'letterBodyIT');
+  renderLetter(contentEN, 'letterBodyEN');
+
+  document.querySelectorAll('.lang-tab').forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      document.querySelectorAll('.lang-tab').forEach(t=> t.classList.remove('active'));
+      document.querySelectorAll('.letter-body').forEach(b=> b.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('letterBody' + tab.dataset.lang.toUpperCase()).classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
