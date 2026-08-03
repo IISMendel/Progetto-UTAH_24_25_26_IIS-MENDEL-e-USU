@@ -222,12 +222,8 @@
 
   <!-- ================= PAGINA 1 ================= -->
   <div class="page-wrap" data-page="1">
-    <img class="base-img" src="poster-pagina1-v2.png" alt="Poster pagina 1" draggable="false">
-  </div>
-
-  <!-- ================= PAGINA 2 ================= -->
-  <div class="page-wrap" data-page="2">
-    <img class="base-img" src="poster-pagina2-v2.png" alt="Poster pagina 2" draggable="false">
+    <video class="base-img" src="poster-pagina1-video.mp4" poster="poster-pagina1-v2.png"
+           autoplay muted loop playsinline></video>
   </div>
 
   <!-- ================= PAGINA 3: lettera scritta a mano, IT | EN ================= -->
@@ -344,10 +340,10 @@
      4) MUSICA DI SOTTOFONDO — 4 brani reali
   ========================================================= */
   const songs = [
-    { name:"Dawn",                     src:"song1-dawn.mp3" },
-    { name:"Distant Peaks",            src:"song2-distant-peaks.mp3" },
-    { name:"Dust on the Ridge",        src:"song3-dust-on-the-ridge.mp3" },
-    { name:"Morning Light on the Lake",src:"song4-morning-light.mp3" },
+    { name:"Dawn",                     src:"Dawn.mp3" },
+    { name:"Distant Peaks",            src:"Distant Peaks.mp3" },
+    { name:"Dust on the Ridge",        src:"Dust on the Ridge.mp3" },
+    { name:"Morning Light on the Lake",src:"Morning Light on the Lake.mp3" },
   ];
   let songIndex = 0;
   const player = new Audio();
